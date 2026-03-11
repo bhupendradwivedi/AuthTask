@@ -18,7 +18,7 @@ const generateAuthToken = (userId) => {
   );
 };
 
-// ADD THIS: The middleware needs this to validate the token
+
 const verifyToken = (token) => {
   return jwt.verify(token, process.env.JWT_SECRET);
 };
@@ -26,5 +26,5 @@ const verifyToken = (token) => {
 module.exports = {
   generateVerificationToken,
   generateAuthToken,
-  verifyToken // MUST be exported here
+  verifyToken 
 };

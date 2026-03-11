@@ -8,7 +8,7 @@ const register = async (req, res, next) => {
   try {
     const { name, email, password } = req.body;
 
-    // Validation [cite: 37, 42]
+  
     if (!name || !email || !password) {
       return res.status(400).json({ message: "All fields are required" });
     }
@@ -18,23 +18,22 @@ const register = async (req, res, next) => {
       return res.status(400).json({ message: "User already exists" });
     }
 
-    // Hash and Create [cite: 44, 45]
+    // Hash and Create
     const hashedPassword = await bcrypt.hash(password, 10);
     const user = await userModel.create({
       name,
       email,
       password: hashedPassword,
-      isVerified: false // Default status [cite: 45]
+      isVerified: false 
     });
 
     const verificationToken = generateVerificationToken(user._id);
     const link = `${process.env.BASE_URL}/api/auth/verify-email?token=${verificationToken}`;
 
-    //FIX: Remove 'await' or move it to a background task
-    // This allows the server to send the JSON response immediately
+    
     sendVerificationEmail(email, link).catch(err => console.error("Email failed in background:", err));
 
-    // Send success response immediately [cite: 47]
+    // Send success
     return res.status(201).json({
       message: "User registered successfully. Please verify email.",
       userId: user._id
@@ -52,7 +51,7 @@ const register = async (req, res, next) => {
       return res.status(400).json({ message: "Verification token is missing" });
     }
 
-    // Verify JWT token [cite: 51]
+    // Verify JWT token 
     const decoded = jwt.verify(token, process.env.JWT_SECRET);
     const user = await userModel.findById(decoded.userId);
 
@@ -69,7 +68,7 @@ const register = async (req, res, next) => {
     user.isVerified = true;
     await user.save();
 
-    // Redirect to frontend login page after success [cite: 54, 121]
+    // Redirect to frontend login page 
     return res.redirect(`${process.env.FRONTEND_URL}/login?verified=true`);
 
   } catch (error) {
@@ -82,34 +81,34 @@ const login = async (req, res, next) => {
   try {
     const { email, password } = req.body;
 
-    // 1. Basic Validation [cite: 125]
+    // 1. Basic Validation 
     if (!email || !password) {
       return res.status(400).json({ message: "Email and password are required" });
     }
 
-    // 2. Find User (Ensure the model name matches your registration code) 
+    // 2. Find User  
     const user = await userModel.findOne({ email }); 
     if (!user) {
       return res.status(400).json({ message: "Invalid credentials" });
     }
 
-    // 3. Verify Password [cite: 59]
+    // 3. Verify Password
     const isMatch = await bcrypt.compare(password, user.password);
     if (!isMatch) {
       return res.status(400).json({ message: "Invalid credentials" });
     }
 
-    // 4. Check Verification Status [cite: 54]
+    // 4. Check Verification Status 
     if (!user.isVerified) {
       return res.status(401).json({ message: "Please verify your email first" });
     }
 
-    // 5. Generate and Send Token [cite: 62, 64]
+    // 5. Generate and Send Token 
     const token = generateAuthToken(user._id);
     return res.status(200).json({ token });
 
   } catch (error) {
-    next(error); // Passes system errors to your global error handler
+    next(error);
   }
 };
 
