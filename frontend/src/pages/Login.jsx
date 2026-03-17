@@ -7,7 +7,7 @@ const Login = () => {
   const location = useLocation();
   const { mutate, isPending, error } = useLogin();
 
-  // Parse URL parameters for verification status
+  
   const queryParams = new URLSearchParams(location.search);
   const isVerified = queryParams.get("verified");
 
@@ -20,8 +20,8 @@ const Login = () => {
       { email, password },
       {
         onSuccess: (data) => {
-          localStorage.setItem("token", data.token); // Store JWT [cite: 69]
-          navigate("/profile"); // Redirect to protected route [cite: 15, 132]
+          localStorage.setItem("token", data.token); 
+          navigate("/profile"); 
         },
       }
     );
@@ -32,7 +32,6 @@ const Login = () => {
       <form onSubmit={handleSubmit} className="bg-white p-8 rounded-xl shadow-md w-[350px] space-y-5">
         <h2 className="text-2xl font-semibold text-center text-black">Login</h2>
 
-        {/* Show success message if redirected from email  */}
         {isVerified === "true" && (
           <p className="text-green-600 text-sm text-center bg-green-50 p-2 rounded">
             Email verified! You can now login.

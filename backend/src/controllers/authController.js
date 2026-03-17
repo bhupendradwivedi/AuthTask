@@ -67,7 +67,7 @@ const register = async (req, res, next) => {
     // Update verification status 
     user.isVerified = true;
     await user.save();
-
+c
     // Redirect to frontend login page 
     return res.redirect(`${process.env.FRONTEND_URL}/login?verified=true`);
 

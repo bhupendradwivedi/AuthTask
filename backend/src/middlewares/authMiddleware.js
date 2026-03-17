@@ -11,7 +11,7 @@ const authMiddleware = (req, res, next) => {
 
   try {
     const decoded = verifyToken(token);
-    // Token se userId nikal kar request mein set karein
+    
     req.userId = decoded.userId; 
     next();
   } catch {

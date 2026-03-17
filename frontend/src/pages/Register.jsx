@@ -11,7 +11,7 @@ const Register = () => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    mutate({ name, email, password }); // [cite: 40, 41, 42]
+    mutate({ name, email, password }); 
   };
 
   return (
@@ -24,7 +24,7 @@ const Register = () => {
 
         {isSuccess && (
           <p className="text-green-600 text-sm text-center bg-green-50 p-2 rounded">
-            Registration successful! Please check your email to verify. {/* [cite: 46] */}
+            Registration successful! Please check your email to verify. 
           </p>
         )}
 
