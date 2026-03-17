@@ -8,7 +8,7 @@ function App() {
   return (
     <BrowserRouter>
       <Routes>
-        {/* Set Register as the default page */}
+      
         <Route path="/" element={<Register />} /> 
         
         <Route path="/register" element={<Register />} />
@@ -23,7 +23,7 @@ function App() {
           }
         />
 
-        {/* Optional: Redirect any unknown routes to register */}
+       
         <Route path="*" element={<Navigate to="/" />} />
       </Routes>
     </BrowserRouter>
